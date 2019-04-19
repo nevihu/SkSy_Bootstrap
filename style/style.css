@@ -6,3 +6,7 @@ button {
     border: 0px;
     margin-right: 7px;
 }
+
+input {
+    min-width: 100px;
+}
