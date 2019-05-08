@@ -5,8 +5,51 @@
     <meta charset="UTF-8">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="style.css">
     <title>Insert-Site</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("button").on("click", function () {
+                var desc = $("#inlineFormInput").val();
+                var deadline_ = new Date($("#inlineFormInput2").val()).getTime();
+                var progress_ = parseInt($("#inlineFormInput3").val());
+
+                postNewTask(desc, deadline_, progress_)
+
+            })
+
+            function postNewTask(desc, deadline, progress){
+                var jsonBody = {"name": desc, "deadline": deadline, "progress": progress}
+
+                console.log(jsonBody);
+
+                $.ajax({
+                    url: "http://localhost:8080/tasks",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(jsonBody),
+                    success: function (data) {
+                        console.log(data)
+                        alert("ToDo wurde erfolgreich hinzugefügt");
+                        emptyFields("inlineFormInput", "inlineFormInput2", "inlineFormInput3")
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("ToDo konnte nicht erstellt werden");
+                        console.log(xhr.status);
+                        console.log(xhr)
+                        console.log(thrownError);
+                        console.log(ajaxOptions)
+                    }
+                })
+            }
+
+            function emptyFields(...rest){
+                rest.map(x => $("#" + x).val(""));
+            }
+        })
+    </script>
 </head>
 
 <body>
@@ -54,7 +97,6 @@
     </tbody>
 </table>
 
-    <script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

@@ -3,7 +3,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-var product = require('./routes/product'); // Imports routes for the products
+var task = require('./routes/task'); // Imports routes for the products
 var time = require('./routes/time')
 var app = express();
 
@@ -19,7 +19,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({extended: false}));
-app.use('/products', product);
+app.use('/tasks', task);
 app.use("/time", time)
 app.use(express.static("public/html"))
 app.use(express.static("public/stylesheets"))

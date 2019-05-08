@@ -12,12 +12,29 @@
         $(document).ready(function(){
             updateTableWithTasks();
 
+            $(".change").on("click", function () {
+                var desc = $("#inlineFormInput").val();
+                var deadline_ = new Date($("#inlineFormInput2").val()).getTime();
+                var progress_ = parseInt($("#inlineFormInput3").val());
 
+                var inner = "        <th scope=\"row\">1</th>\n" +
+                    "        <td><input class=\"form-control mb-2\" id=\"inlineFormInput\" placeholder=\"TODO\" required type=\"text\" value=\"" +  + "\"'></td>\n" +
+                    "        <td><input class=\"form-control\" id=\"inlineFormInput2\" required type=\"date\"></td>\n" +
+                    "        <td><input class=\"form-control\" id=\"inlineFormInput3\" placeholder=\"0\" required type=\"number\"></td>\" +
+                "        <td taskid=" + id + "><button class='change'><i class=\"fas fa-pen\"></i></button><button class='delete'><i class=\"fas fa-trash\"></i></button></td>"
+
+                replaceRowWithInputFields(id)
+
+            })
+
+            function replaceRowWithInputFields(id) {
+
+            }
 
             function updateTableWithTasks() {
                 $("tbody").empty();
                 $.ajax({
-                    url: "http://localhost:8080/products",
+                    url: "http://localhost:8080/tasks",
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
@@ -30,22 +47,22 @@
                         })
 
                         dateList.forEach(x => {
-                            $('tbody').append(wrapWithTdTags(x.id, x.count, x.name, x.date + " " + x.time, x.progress))
+                            $('tbody').append(wrapWithTdTags(x.id, x.count, x.name, x.date, x.progress))
                         })
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(xhr.status);
                         console.log(xhr)
                         console.log(thrownError);
-                        console.log(ajaxOptions)
+                        console.log(ajaxOptions);
                     }
                 })
             }
 
             function wrapWithTdTags(id, ...rest){
-                var result = "<tr>"
+                var result = "<tr id=\"" + id + "\" >"
                 rest.forEach(x => result+= "<td>" + x + "</td>")
-                var buttons = "<td taskid=" + id + "><button id='change'><i class=\"fas fa-pen\"></i></button><button id='delete'><i class=\"fas fa-trash\"></i></button></td>"
+                var buttons = "<td taskid=" + id + "><button class='change'><i class=\"fas fa-pen\"></i></button><button class='delete'><i class=\"fas fa-trash\"></i></button></td>"
                 return result + buttons + "</tr>"
             }
 
