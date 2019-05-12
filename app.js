@@ -4,7 +4,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var task = require('./routes/task'); // Imports routes for the products
-var time = require('./routes/time')
 var app = express();
 
 
@@ -20,10 +19,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({extended: false}));
 app.use('/tasks', task);
-app.use("/time", time)
 app.use(express.static("public/html"))
 app.use(express.static("public/stylesheets"))
 app.use(express.static("public/images"))
+app.use(express.static("public/js"))
 var port = 8080;
 
 app.listen(port, () => {
